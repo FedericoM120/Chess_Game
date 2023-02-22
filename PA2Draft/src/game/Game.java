@@ -56,18 +56,35 @@ public class Game {
         }
     }
 
-    public boolean move(Move move) {//makes a move, returns true if successful, false otherwise.
+    public boolean move(Move move)  {//makes a move, returns true if successful, false otherwise.
+        String currentPlayer;
+        String moveType;
+
         Square src = board[move.getRow0()][move.getCol0()], dst = board[move.getRow1()][move.getCol1()];
         if (src.getOccupant() == null ||//empty src square
                 !board[move.getRow0()][move.getCol0()].getOccupant().isLegal(move, this))//illegal move
             return false;
 
+        if (isWhiteTurn()) {
+            currentPlayer = player1;
+        } else {
+            currentPlayer = player2;
+        }
+
+        if (dst.getOccupant() == null) {
+            moveType = "moves";
+        } else {
+            moveType = "captures";
+        }
+
+        System.out.println(currentPlayer + " " + moveType + ": " + move.getMove());
 
         Piece captured = dst.getOccupant();
         if (captured != null) {
             // remove the captured piece from the board
             dst.setOccupant(null);
             undoStack.push(captured);
+
         }
         moves.add(move);
         dst.setOccupant(src.getOccupant());
@@ -75,24 +92,14 @@ public class Game {
         return true;
     }
 
-    public boolean undo() {
-        if (!moves.isEmpty()) {
-            // remove the last move from the list
-            Move lastMove = moves.remove(moves.size() - 1);
-
-            // create a new game with the same players
-            Game undoGame = new Game(player1, player2);
-
-            // replay all the moves up to the last one in the new game
-            for (Move move : moves) {
-                undoGame.move(move);
-            }
-
-            // set the current game to the new game
-            Game game = undoGame;
+    public String getMoves(){
+        String s = "";
+        for (Move playerMoves: moves) {
+             s += playerMoves.getMove() + " ";
         }
-        return false;
+        return s;
     }
+
     @Override
     public String toString() {
         return moves.toString();

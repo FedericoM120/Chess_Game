@@ -34,4 +34,8 @@ public class Move {
     public String toString() {
         return move;
     }
+
+    public String getMove() {
+        return move;
+    }
 }
