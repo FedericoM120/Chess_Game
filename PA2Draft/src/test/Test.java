@@ -18,7 +18,13 @@ public class Test {
 			while (!validMove) {
 				System.out.println("player1 enter your move");
 				player1Move = keyboard.nextLine();
-				if (game.move(new Move(player1Move))) {
+				if (player1Move.equals("undo")) {
+					if (!game.undo()) {
+						System.out.println("Cannot undo!");
+					} else {
+						game.showBoard(System.out);
+					}
+				}else if (game.move(new Move(player1Move))) {
 					game.showBoard(System.out);
 					validMove = true;
 				} else {
@@ -31,7 +37,13 @@ public class Test {
 			while (!validMove) {
 				System.out.println("player2 enter your move");
 				player2Move = keyboard.nextLine();
-				if (game.move(new Move(player2Move))) {
+				if (player2Move.equals("undo")) {
+					if (!game.undo()) {
+						System.out.println("Cannot undo!");
+					} else {
+						game.showBoard(System.out);
+					}
+				}else if (game.move(new Move(player2Move))) {
 					game.showBoard(System.out);
 					validMove = true;
 				} else {
@@ -40,7 +52,6 @@ public class Test {
 			}
 			game.showBoard(System.out);
 		}
-
 	}
 }
 

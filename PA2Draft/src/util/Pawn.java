@@ -24,21 +24,13 @@ public class Pawn extends Piece{
 			if(Math.abs(rowDiff) != 1 && Math.abs(rowDiff) != 2)
 				return false;
 		}else{//capturing
-			if ((colDiff != 1 && rowDiff != -1) || (colDiff != -1 && rowDiff != -1)) {
+			if (Math.abs(rowDiff) != 1 || Math.abs(colDiff) != 1) {
 				return false;
 			}
-			if ((colDiff != 1 && rowDiff != 1) || (colDiff != -1 && rowDiff != 1)){
-				return false;
-			}
-			/*Piece capturedPiece = game.getPiece(move.getRow1(), move.getCol1());
-			if ((game.isWhiteTurn()) && (capturedPiece.white == true)){
-				return false;
-			}
-			if (!(game.isWhiteTurn()) && (capturedPiece.white == false)){
-				return false;
-			}*/
+
 		}
 		return true;
+
     }
     @Override
     public String toString() {

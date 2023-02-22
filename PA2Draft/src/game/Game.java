@@ -8,6 +8,7 @@ import util.*;
 public class Game {
     private String player1, player2;
     private ArrayList<Move> moves;
+    private Stack<Piece> undoStack = new Stack<Piece>(); ;
     private Square[][] board;
 
     public Piece getPiece(int row, int col) {
@@ -60,12 +61,38 @@ public class Game {
         if (src.getOccupant() == null ||//empty src square
                 !board[move.getRow0()][move.getCol0()].getOccupant().isLegal(move, this))//illegal move
             return false;
+
+
+        Piece captured = dst.getOccupant();
+        if (captured != null) {
+            // remove the captured piece from the board
+            dst.setOccupant(null);
+            undoStack.push(captured);
+        }
         moves.add(move);
         dst.setOccupant(src.getOccupant());
         src.setOccupant(null);
         return true;
     }
 
+    public boolean undo() {
+        if (!moves.isEmpty()) {
+            // remove the last move from the list
+            Move lastMove = moves.remove(moves.size() - 1);
+
+            // create a new game with the same players
+            Game undoGame = new Game(player1, player2);
+
+            // replay all the moves up to the last one in the new game
+            for (Move move : moves) {
+                undoGame.move(move);
+            }
+
+            // set the current game to the new game
+            Game game = undoGame;
+        }
+        return false;
+    }
     @Override
     public String toString() {
         return moves.toString();

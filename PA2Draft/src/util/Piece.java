@@ -2,7 +2,12 @@ package util;
 import game.*;
 public class Piece {
     protected boolean white;//white if true, black otherwise
-    public boolean isLegal(Move move, Game game) {
+
+	public boolean isWhite() {
+		return white;
+	}
+
+	public boolean isLegal(Move move, Game game) {
 		if (white != game.isWhiteTurn())
 			return false;
 		Piece captured = game.getPiece(move.getRow1(), move.getCol1());
